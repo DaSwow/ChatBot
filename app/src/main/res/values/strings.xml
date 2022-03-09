@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ChatBot</string>
+    <string name="defaultMessage">This is a sample message that will appear</string>
+    <string name="typeMessage">Type a message...</string>
+    <string name="send">Send</string>
+
+
+</resources>
