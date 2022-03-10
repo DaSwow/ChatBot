@@ -84,12 +84,46 @@ class MainActivity : AppCompatActivity() {
     private fun botResponse(message:String){
         val timeStamp = Time.timeStamp()
 
-        Global
+        GlobalScope.launch {
+            //Fake response delay
+            delay(1000)
 
+            withContext(Dispatchers.Main){
+                val response = BotResponse.basicResponses(message)
 
+                messagesList.add(Message(response, RECEIVE_ID,timeStamp))
+                adapter.insertMessage(Message(response, RECEIVE_ID, timeStamp))
+                rv_messages.scrollToPosition(adapter.itemCount-1)
+                when(response){
+                    OPEN_GOOGLE->{
+                        val site = Intent(Intent.ACTION_VIEW)
+                        site.data = Uri.parse("https://google.com/")
+                        startActivity(site)
+                    }
+                    OPEN_SEARCH->{
+                        val site = Intent(Intent.ACTION_VIEW)
+                        val searchTerm: String? = message.substringAfterLast("search")
+                        site.data = Uri.parse("https://google.com/search?&q=$searchTerm")
+                        startActivity(site)
+                    }
+                }
+            }
+        }
     }
 
+    private fun customBotMessage(message: String) {
+        GlobalScope.launch {
+            delay(1000)
+            withContext(Dispatchers.Main) {
+                val timeStamp =  Time.timeStamp()
+                messagesList.add(Message(message, RECEIVE_ID, timeStamp))
+                adapter.insertMessage(Message(message, RECEIVE_ID, timeStamp))
 
+                rv_messages.scrollToPosition(adapter.itemCount-1)
+            }
 
+        }
+    }
 
-}
+        }
+
